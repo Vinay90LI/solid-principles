@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.solid.lsp.Bicycle;
+import com.example.solid.lsp.MotorCycle;
 import com.example.solid.ocp.DatabaseInvoiceDao;
 import com.example.solid.ocp.FileInvoiceDao;
 import com.example.solid.srp.Invoice;
@@ -21,5 +23,20 @@ public class Main {
         databaseInvoiceDao.save();
         FileInvoiceDao fileInvoiceDao=new FileInvoiceDao(invoice);
         fileInvoiceDao.save();
+
+        //***Liskov Substitution Principle Implementation***/
+        MotorCycle motorcycle=new MotorCycle("Hero",10);
+        Bicycle bicycle=new Bicycle("Hercules",true,10);
+
+        //works fine with Bicycle -implements all Bike class behaviour and Engine class as well
+        motorcycle.turnOnEngine();
+        motorcycle.accelerate();
+        motorcycle.applyBrakes();
+        motorcycle.turnOffEngine();
+        //works fine with Bicycle -implements all Bike class behaviour
+        bicycle.accelerate();
+        bicycle.applyBrakes();
+
+
     }
 }
