@@ -1,5 +1,9 @@
 package com.example;
 
+import com.example.solid.isp.Chef;
+import com.example.solid.isp.ChefTasks;
+import com.example.solid.isp.Waiter;
+import com.example.solid.isp.WaiterTasks;
 import com.example.solid.lsp.Bicycle;
 import com.example.solid.lsp.MotorCycle;
 import com.example.solid.ocp.DatabaseInvoiceDao;
@@ -11,14 +15,38 @@ import com.example.solid.srp.Marker;
 
 public class Main {
     public static void main(String[] args){
-        /***Single Responsibility Principle Implementation***/
+        //***Single Responsibility Principle Implementation***/
         Invoice invoice=new Invoice(new Marker("marker1","coral",20),5);
         InvoiceDao invoiceDao=new InvoiceDao(invoice);
         InvoicePrinter invoicePrinter=new InvoicePrinter(invoice);
         System.out.println(invoice.calculateTotal());
         invoiceDao.saveToDB(invoice);
         invoicePrinter.printing();
-        //**Open/Closed Principle Implementation***/
+        //*** Open/Closed Principle Implementation***/
+        Bicycle bicycle = getBicycle(invoice);
+        bicycle.applyBrakes();
+
+        //***Interface Segregation Principle Implementation***/
+        ChefTasks chef=new Chef();
+        chef.prepareFood();
+        chef.decideMenu();
+
+        WaiterTasks waiter=new Waiter();
+        waiter.serveCustomer();
+        waiter.takeOrder();
+
+        /*Benefits:
+        --prevents bloated classes by having each class implement only the methods they need.
+        --No forced dependencies on irrelevant functionality
+        --Cleaner,more maintainable design/code.
+         */
+
+
+        //***Dependency Inversion Principle Implementation***/
+
+    }
+
+    private static Bicycle getBicycle(Invoice invoice) {
         DatabaseInvoiceDao databaseInvoiceDao=new DatabaseInvoiceDao(invoice);
         databaseInvoiceDao.save();
         FileInvoiceDao fileInvoiceDao=new FileInvoiceDao(invoice);
@@ -35,8 +63,6 @@ public class Main {
         motorcycle.turnOffEngine();
         //works fine with Bicycle -implements all Bike class behaviour
         bicycle.accelerate();
-        bicycle.applyBrakes();
-
-
+        return bicycle;
     }
 }
